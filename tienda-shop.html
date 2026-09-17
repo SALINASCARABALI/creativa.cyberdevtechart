@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TiendaShop - Demo | CyberDevTechArt</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #fd79a8;
+            --primary-dark: #e84393;
+            --secondary: #fdcb6e;
+            --dark: #2d3436;
+            --light: #f8f9fa;
+            --gradient: linear-gradient(135deg, #fd79a8 0%, #e84393 100%);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; overflow-x: hidden; color: var(--dark); background: var(--light); }
+
+        .demo-banner { background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%); color: white; padding: 12px 20px; text-align: center; font-size: 0.9rem; position: fixed; top: 0; left: 0; right: 0; z-index: 9999; }
+        .demo-banner a { color: #81ecec; font-weight: 600; text-decoration: none; margin-left: 10px; }
+
+        .navbar { background: rgba(255,255,255,0.95) !important; backdrop-filter: blur(10px); box-shadow: 0 2px 20px rgba(0,0,0,0.05); padding: 15px 0; margin-top: 45px; }
+        .navbar-brand { font-weight: 800; font-size: 1.5rem; color: var(--primary) !important; }
+        .navbar-brand i { margin-right: 8px; color: var(--secondary); }
+        .nav-link { font-weight: 500; color: var(--dark) !important; margin: 0 10px; position: relative; transition: all 0.3s ease; }
+        .nav-link::after { content: ''; position: absolute; bottom: -5px; left: 0; width: 0; height: 3px; background: var(--gradient); border-radius: 2px; transition: width 0.3s ease; }
+        .nav-link:hover::after { width: 100%; }
+        .nav-link:hover { color: var(--primary) !important; }
+        .btn-nav { background: var(--gradient); color: white !important; padding: 10px 25px !important; border-radius: 50px; font-weight: 600; border: none; transition: all 0.3s ease; }
+        .btn-nav:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(253,121,168,0.35); }
+
+        .btn-cart-nav { position: relative; background: rgba(253,121,168,0.1); color: var(--primary) !important; width: 44px; height: 44px; border-radius: 14px; display: flex; align-items: center; justify-content: center; margin-right: 8px; font-size: 1.1rem; transition: all 0.3s ease; }
+        .btn-cart-nav:hover { background: var(--gradient); color: white !important; }
+        .cart-count { position: absolute; top: -6px; right: -6px; background: var(--dark); color: white; font-size: 0.65rem; font-weight: 700; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+
+        .hero { min-height: 100vh; background: linear-gradient(135deg, #fff5f8 0%, #fff9ec 100%); display: flex; align-items: center; position: relative; overflow: hidden; padding-top: 80px; }
+        .hero::before { content: ''; position: absolute; width: 600px; height: 600px; border-radius: 50%; background: rgba(253,121,168,0.08); top: -200px; right: -200px; animation: float 8s ease-in-out infinite; }
+        .hero::after { content: ''; position: absolute; width: 400px; height: 400px; border-radius: 50%; background: rgba(253,203,110,0.1); bottom: -100px; left: -100px; animation: float 6s ease-in-out infinite reverse; }
+        @keyframes float { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-30px) scale(1.05); } }
+
+        .hero h1 { font-size: 3rem; font-weight: 800; line-height: 1.2; margin-bottom: 20px; animation: fadeInUp 1s ease; }
+        .hero h1 span { background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .hero p { font-size: 1.15rem; color: #636e72; margin-bottom: 30px; animation: fadeInUp 1s ease 0.2s both; }
+        .hero-btns { animation: fadeInUp 1s ease 0.4s both; }
+        .btn-hero-primary { background: var(--gradient); color: white; padding: 15px 40px; border-radius: 50px; font-weight: 600; border: none; transition: all 0.3s ease; box-shadow: 0 10px 30px rgba(253,121,168,0.35); }
+        .btn-hero-primary:hover { transform: translateY(-3px); box-shadow: 0 15px 40px rgba(253,121,168,0.45); color: white; }
+        .btn-hero-outline { background: transparent; color: var(--dark); padding: 15px 40px; border-radius: 50px; font-weight: 600; border: 2px solid #ddd; margin-left: 15px; transition: all 0.3s ease; }
+        .btn-hero-outline:hover { border-color: var(--primary); color: var(--primary); transform: translateY(-3px); }
+
+        .hero-stats { margin-top: 50px; display: flex; gap: 40px; animation: fadeInUp 1s ease 0.6s both; }
+        .stat-item h3 { font-size: 2.2rem; font-weight: 700; color: var(--primary); }
+        .stat-item p { color: #636e72; font-size: 0.9rem; }
+
+        .hero-visual { position: relative; animation: fadeInRight 1.2s ease; display: flex; justify-content: center; align-items: center; }
+        .hero-visual .demo-screen { width: 100%; max-width: 450px; height: 450px; border-radius: 30px; background: linear-gradient(135deg, #ffe9f1 0%, #fff5e0 100%); display: flex; align-items: center; justify-content: center; font-size: 8rem; color: var(--primary); box-shadow: 0 30px 60px rgba(0,0,0,0.1); }
+        .floating-card { position: absolute; background: white; padding: 18px 22px; border-radius: 18px; box-shadow: 0 15px 40px rgba(0,0,0,0.1); animation: floatCard 3s ease-in-out infinite; }
+        .floating-card.card-1 { top: 15%; left: -20px; animation-delay: 0s; }
+        .floating-card.card-2 { bottom: 15%; right: -10px; animation-delay: 1.5s; }
+        .floating-card i { font-size: 1.5rem; color: var(--primary); margin-bottom: 8px; }
+        .floating-card h5 { font-size: 0.9rem; font-weight: 600; margin: 0; }
+        .floating-card p { font-size: 0.75rem; color: #636e72; margin: 0; }
+        @keyframes floatCard { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeInRight { from { opacity: 0; transform: translateX(60px); } to { opacity: 1; transform: translateX(0); } }
+
+        .section-padding { padding: 100px 0; }
+        .section-title { text-align: center; margin-bottom: 60px; }
+        .section-title h2 { font-size: 2.3rem; font-weight: 700; margin-bottom: 15px; }
+        .section-title h2 span { color: var(--primary); }
+        .section-title p { color: #636e72; max-width: 600px; margin: 0 auto; }
+
+        /* Categorías */
+        .categories { background: white; }
+        .category-pill { background: var(--light); border: 2px solid transparent; border-radius: 50px; padding: 10px 24px; font-weight: 600; font-size: 0.9rem; color: var(--dark); cursor: pointer; transition: all 0.3s ease; white-space: nowrap; }
+        .category-pill.active, .category-pill:hover { background: var(--gradient); color: white; border-color: transparent; }
+        .categories-row { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 55px; }
+
+        /* Productos */
+        .products { background: white; }
+        .product-card { background: white; border-radius: 25px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.05); transition: all 0.4s ease; height: 100%; border: 1px solid #f5f5f5; }
+        .product-card:hover { transform: translateY(-10px); box-shadow: 0 30px 60px rgba(0,0,0,0.12); }
+        .product-img { height: 190px; background: linear-gradient(135deg, #ffe9f1 0%, #fff5e0 100%); display: flex; align-items: center; justify-content: center; font-size: 3.6rem; position: relative; color: var(--primary); }
+        .product-badge { position: absolute; top: 15px; left: 15px; background: var(--primary); color: white; padding: 5px 15px; border-radius: 50px; font-size: 0.75rem; font-weight: 600; }
+        .product-body { padding: 22px; }
+        .product-cat { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; color: var(--primary); font-weight: 700; }
+        .product-body h5 { font-weight: 600; margin: 6px 0 10px; }
+        .product-price { font-size: 1.3rem; font-weight: 700; color: var(--dark); }
+        .product-price span { font-size: 0.85rem; color: #b2bec3; text-decoration: line-through; margin-left: 8px; font-weight: 400; }
+        .btn-add-cart { background: var(--gradient); color: white; border: none; padding: 10px 20px; border-radius: 50px; font-weight: 600; width: 100%; margin-top: 15px; transition: all 0.3s ease; font-size: 0.9rem; }
+        .btn-add-cart:hover { transform: scale(1.02); box-shadow: 0 10px 25px rgba(253,121,168,0.35); color: white; }
+        .btn-add-cart.added { background: #00b894; }
+
+        /* Carrito lateral */
+        .cart-drawer { position: fixed; top: 0; right: -420px; width: 100%; max-width: 400px; height: 100vh; background: white; z-index: 10001; box-shadow: -15px 0 50px rgba(0,0,0,0.15); transition: right 0.4s ease; display: flex; flex-direction: column; }
+        .cart-drawer.open { right: 0; }
+        .cart-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 10000; display: none; }
+        .cart-overlay.open { display: block; }
+        .cart-header { padding: 25px; border-bottom: 1px solid #f0f0f0; display: flex; justify-content: space-between; align-items: center; }
+        .cart-header h4 { font-weight: 700; margin: 0; }
+        .cart-close { background: var(--light); border: none; width: 38px; height: 38px; border-radius: 50%; }
+        .cart-items { flex-grow: 1; overflow-y: auto; padding: 20px 25px; }
+        .cart-item { display: flex; gap: 14px; align-items: center; padding: 14px 0; border-bottom: 1px solid #f5f5f5; }
+        .cart-item-icon { width: 55px; height: 55px; border-radius: 14px; background: linear-gradient(135deg, #ffe9f1, #fff5e0); display: flex; align-items: center; justify-content: center; color: var(--primary); font-size: 1.4rem; flex-shrink: 0; }
+        .cart-item-info { flex-grow: 1; }
+        .cart-item-info h6 { margin: 0 0 4px; font-weight: 600; font-size: 0.9rem; }
+        .cart-item-info small { color: #636e72; }
+        .cart-item-qty { display: flex; align-items: center; gap: 8px; margin-top: 6px; }
+        .qty-btn { width: 24px; height: 24px; border-radius: 50%; border: 1px solid #ddd; background: white; font-size: 0.75rem; line-height: 1; }
+        .cart-item-remove { color: #d63031; background: none; border: none; font-size: 0.9rem; }
+        .cart-footer { padding: 22px 25px; border-top: 1px solid #f0f0f0; }
+        .cart-total { display: flex; justify-content: space-between; font-weight: 700; font-size: 1.15rem; margin-bottom: 16px; }
+        .cart-empty { text-align: center; padding: 60px 20px; color: #b2bec3; }
+        .cart-empty i { font-size: 3rem; margin-bottom: 15px; display: block; }
+
+        .cta { padding: 80px 0; background: var(--gradient); position: relative; overflow: hidden; text-align: center; color: white; }
+        .cta h2 { font-size: 2.2rem; font-weight: 700; margin-bottom: 15px; }
+        .cta p { font-size: 1.1rem; opacity: 0.9; max-width: 600px; margin: 0 auto 25px; }
+        .btn-cta { background: white; color: var(--primary); padding: 14px 40px; border-radius: 50px; font-weight: 700; border: none; transition: all 0.3s ease; display: inline-block; text-decoration: none; }
+        .btn-cta:hover { transform: translateY(-3px); box-shadow: 0 15px 40px rgba(0,0,0,0.2); background: var(--dark); color: white; }
+
+        .contact { padding: 100px 0; background: white; }
+        .contact-info-card { background: linear-gradient(135deg, #f8f9fa 0%, #fff5f8 100%); padding: 35px; border-radius: 25px; height: 100%; }
+        .contact-info-item { display: flex; align-items: center; margin-bottom: 22px; }
+        .contact-info-icon { width: 50px; height: 50px; background: white; border-radius: 16px; display: flex; align-items: center; justify-content: center; color: var(--primary); font-size: 1.2rem; margin-right: 18px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .contact-info-text h5 { font-weight: 600; margin-bottom: 3px; font-size: 0.95rem; }
+        .contact-info-text p { color: #636e72; margin: 0; font-size: 0.9rem; }
+        .contact-form { background: white; padding: 35px; border-radius: 25px; box-shadow: 0 10px 40px rgba(0,0,0,0.05); border: 1px solid #f0f0f0; }
+        .form-control { border: 2px solid #f0f0f0; border-radius: 15px; padding: 14px 18px; font-size: 1rem; transition: all 0.3s ease; margin-bottom: 18px; font-family: 'Poppins', sans-serif; width: 100%; }
+        .form-control:focus { border-color: var(--primary); box-shadow: 0 0 0 0.2rem rgba(253,121,168,0.15); outline: none; }
+        .btn-submit { background: var(--gradient); color: white; padding: 14px 35px; border-radius: 50px; font-weight: 600; border: none; width: 100%; transition: all 0.3s ease; cursor: pointer; font-family: 'Poppins', sans-serif; }
+        .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(253,121,168,0.35); }
+
+        .footer { background: var(--dark); color: white; padding: 60px 0 25px; }
+        .footer-brand { font-size: 1.5rem; font-weight: 800; color: var(--primary); margin-bottom: 15px; display: block; }
+        .footer p { color: rgba(255,255,255,0.5); font-size: 0.9rem; }
+        .footer h5 { font-weight: 600; margin-bottom: 20px; color: white; }
+        .footer-links { padding: 0; }
+        .footer-links li { margin-bottom: 10px; list-style: none; }
+        .footer-links a { color: rgba(255,255,255,0.5); text-decoration: none; transition: all 0.3s ease; display: inline-block; font-size: 0.9rem; }
+        .footer-links a:hover { color: var(--primary); transform: translateX(5px); }
+        .footer-bottom { border-top: 1px solid rgba(255,255,255,0.08); margin-top: 50px; padding-top: 25px; text-align: center; color: rgba(255,255,255,0.4); font-size: 0.85rem; }
+
+        .reveal { opacity: 0; transform: translateY(50px); transition: all 0.8s ease; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        .toast-mini { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--dark); color: white; padding: 14px 26px; border-radius: 50px; font-size: 0.9rem; font-weight: 500; z-index: 10002; opacity: 0; transition: all 0.3s ease; pointer-events: none; }
+        .toast-mini.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+        @media (max-width: 767px) {
+            .hero { padding: 100px 0 60px; text-align: center; }
+            .hero h1 { font-size: 2rem; }
+            .hero-stats { justify-content: center; gap: 25px; }
+            .btn-hero-outline { margin-left: 0; margin-top: 15px; }
+            .floating-card { display: none; }
+            .section-title h2 { font-size: 1.8rem; }
+            .demo-banner { font-size: 0.8rem; }
+            .navbar { margin-top: 40px; }
+            .cart-drawer { max-width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Demo Banner -->
+    <div class="demo-banner">
+        <i class="fas fa-flask me-2"></i>Esta es una página de demostración creada por CyberDevTechArt
+        <a href="index.html#demos"><i class="fas fa-arrow-left me-1"></i> Volver al portafolio</a>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#"><i class="fas fa-bag-shopping"></i>TiendaShop</a>
+            <div class="d-flex align-items-center order-lg-2">
+                <button class="btn-cart-nav" onclick="openCart()" aria-label="Ver carrito">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count" id="cartCount">0</span>
+                </button>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item"><a class="nav-link" href="#inicio">Inicio</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#productos">Productos</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#contacto">Contacto</a></li>
+                    <li class="nav-item"><a class="btn-nav" href="#contacto">Cotizar Mi Tienda</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero" id="inicio">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <div>
+                        <h1>Tu tienda online,<br><span>lista para vender</span></h1>
+                        <p>Catálogo de productos, carrito de compras y checkout: todo lo que necesitas para vender en internet, con un diseño que enamora a tus clientes.</p>
+                        <div class="hero-btns">
+                            <a href="#productos" class="btn btn-hero-primary">Ver Catálogo</a>
+                            <a href="#contacto" class="btn btn-hero-outline">Solicitar Demo</a>
+                        </div>
+                        <div class="hero-stats">
+                            <div class="stat-item"><h3>1,200+</h3><p>Pedidos al mes</p></div>
+                            <div class="stat-item"><h3>4.9★</h3><p>Satisfacción</p></div>
+                            <div class="stat-item"><h3>100%</h3><p>Responsive</p></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="hero-visual">
+                        <div class="demo-screen"><i class="fas fa-bag-shopping"></i></div>
+                        <div class="floating-card card-1">
+                            <i class="fas fa-truck-fast"></i>
+                            <h5>Envío rápido</h5>
+                            <p>24-48 horas</p>
+                        </div>
+                        <div class="floating-card card-2">
+                            <i class="fas fa-lock"></i>
+                            <h5>Pago seguro</h5>
+                            <p>Compra protegida</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Productos -->
+    <section class="products section-padding" id="productos">
+        <div class="container">
+            <div class="section-title reveal">
+                <h2>Nuestro <span>Catálogo</span></h2>
+                <p>Prueba a agregar productos al carrito: funciona de verdad, como en tu futura tienda.</p>
+            </div>
+
+            <div class="categories-row reveal">
+                <button class="category-pill active" data-cat="todos" onclick="filterCategory('todos', this)">Todos</button>
+                <button class="category-pill" data-cat="ropa" onclick="filterCategory('ropa', this)">Ropa</button>
+                <button class="category-pill" data-cat="accesorios" onclick="filterCategory('accesorios', this)">Accesorios</button>
+                <button class="category-pill" data-cat="hogar" onclick="filterCategory('hogar', this)">Hogar</button>
+            </div>
+
+            <div class="row g-4" id="productsGrid"></div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta">
+        <div class="container">
+            <div class="reveal">
+                <h2>¿Quieres una tienda como esta?</h2>
+                <p>Esta demo fue creada por CyberDevTechArt. Contáctanos y la personalizamos con tus productos.</p>
+                <a href="index.html#contacto" class="btn btn-cta">Cotizar Mi Tienda</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact -->
+    <section class="contact" id="contacto">
+        <div class="container">
+            <div class="section-title reveal">
+                <h2>Hablemos de <span>tu tienda</span></h2>
+                <p>Cuéntanos qué vendes y te armamos una propuesta.</p>
+            </div>
+            <div class="row g-4">
+                <div class="col-lg-5">
+                    <div class="contact-info-card reveal">
+                        <h4 style="font-weight: 700; margin-bottom: 25px;">Información de Contacto</h4>
+                        <div class="contact-info-item">
+                            <div class="contact-info-icon"><i class="fas fa-envelope"></i></div>
+                            <div class="contact-info-text"><h5>Email</h5><p>ventas@tiendashop.com</p></div>
+                        </div>
+                        <div class="contact-info-item">
+                            <div class="contact-info-icon"><i class="fas fa-phone"></i></div>
+                            <div class="contact-info-text"><h5>Teléfono</h5><p>+57 300 123 4567</p></div>
+                        </div>
+                        <div class="contact-info-item">
+                            <div class="contact-info-icon"><i class="fas fa-truck"></i></div>
+                            <div class="contact-info-text"><h5>Envíos</h5><p>A todo el país</p></div>
+                        </div>
+                        <div class="contact-info-item">
+                            <div class="contact-info-icon"><i class="fas fa-clock"></i></div>
+                            <div class="contact-info-text"><h5>Horario</h5><p>Lun - Sáb: 9:00 - 19:00</p></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-7">
+                    <div class="contact-form reveal">
+                        <h4 style="font-weight: 700; margin-bottom: 20px;">Envíanos un mensaje</h4>
+                        <form onsubmit="event.preventDefault(); demoAlert();">
+                            <div class="row">
+                                <div class="col-md-6"><input type="text" class="form-control" placeholder="Nombre"></div>
+                                <div class="col-md-6"><input type="email" class="form-control" placeholder="Correo"></div>
+                            </div>
+                            <input type="text" class="form-control" placeholder="Asunto">
+                            <textarea class="form-control" rows="4" placeholder="Mensaje"></textarea>
+                            <button type="submit" class="btn btn-submit">Enviar Mensaje</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4">
+                    <a class="footer-brand" href="#"><i class="fas fa-bag-shopping"></i>TiendaShop</a>
+                    <p>Tu tienda online moderna, rápida y lista para vender desde el primer día.</p>
+                </div>
+                <div class="col-lg-2 col-md-4 mb-4">
+                    <h5>Tienda</h5>
+                    <ul class="footer-links">
+                        <li><a href="#productos">Catálogo</a></li>
+                        <li><a href="#">Ofertas</a></li>
+                        <li><a href="#">Novedades</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-4 mb-4">
+                    <h5>Soporte</h5>
+                    <ul class="footer-links">
+                        <li><a href="#">Envíos</a></li>
+                        <li><a href="#">Devoluciones</a></li>
+                        <li><a href="#contacto">Contacto</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4 col-md-4 mb-4">
+                    <h5>¿Te gusta esta tienda?</h5>
+                    <p style="font-size: 0.85rem;">Fue creada por <strong style="color: var(--primary);">CyberDevTechArt-Creativa</strong>. Contáctanos para tener una igual o mejor.</p>
+                    <a href="index.html#contacto" class="btn btn-hero-primary" style="padding: 10px 25px; font-size: 0.9rem;">Quiero Mi Tienda</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 TiendaShop Demo. Creado por <a href="index.html" style="color: var(--primary); text-decoration: none;">CyberDevTechArt-Creativa</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Carrito -->
+    <div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+    <div class="cart-drawer" id="cartDrawer">
+        <div class="cart-header">
+            <h4><i class="fas fa-shopping-cart me-2"></i>Tu Carrito</h4>
+            <button class="cart-close" onclick="closeCart()"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="cart-items" id="cartItemsContainer"></div>
+        <div class="cart-footer">
+            <div class="cart-total"><span>Total</span><span id="cartTotal">$0.00</span></div>
+            <button class="btn btn-submit" onclick="demoAlert()">Finalizar Compra</button>
+        </div>
+    </div>
+
+    <div class="toast-mini" id="toastMini"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // ============================
+        // PRODUCTOS DE DEMOSTRACIÓN
+        // ============================
+        const PRODUCTS = [
+            { id: 1, name: 'Chaqueta Urbana', cat: 'ropa', icon: 'fa-shirt', price: 89.99, oldPrice: 119.99, badge: 'Popular' },
+            { id: 2, name: 'Camiseta Básica', cat: 'ropa', icon: 'fa-shirt', price: 24.99, oldPrice: null, badge: null },
+            { id: 3, name: 'Reloj Minimalista', cat: 'accesorios', icon: 'fa-clock', price: 59.99, oldPrice: 79.99, badge: 'Nuevo' },
+            { id: 4, name: 'Bolso de Cuero', cat: 'accesorios', icon: 'fa-briefcase', price: 74.99, oldPrice: null, badge: null },
+            { id: 5, name: 'Lámpara de Mesa', cat: 'hogar', icon: 'fa-lightbulb', price: 34.99, oldPrice: 44.99, badge: null },
+            { id: 6, name: 'Set de Cojines', cat: 'hogar', icon: 'fa-couch', price: 42.99, oldPrice: null, badge: 'Nuevo' },
+            { id: 7, name: 'Gorra Deportiva', cat: 'accesorios', icon: 'fa-hat-cowboy', price: 19.99, oldPrice: null, badge: null },
+            { id: 8, name: 'Sudadera Oversize', cat: 'ropa', icon: 'fa-shirt', price: 54.99, oldPrice: 69.99, badge: 'Popular' }
+        ];
+
+        let currentFilter = 'todos';
+        let cart = [];
+
+        function renderProducts() {
+            const grid = document.getElementById('productsGrid');
+            const list = currentFilter === 'todos' ? PRODUCTS : PRODUCTS.filter(p => p.cat === currentFilter);
+
+            grid.innerHTML = list.map(p => `
+                <div class="col-md-6 col-lg-3">
+                    <div class="product-card reveal active">
+                        <div class="product-img">
+                            ${p.badge ? `<span class="product-badge">${p.badge}</span>` : ''}
+                            <i class="fas ${p.icon}"></i>
+                        </div>
+                        <div class="product-body">
+                            <span class="product-cat">${p.cat}</span>
+                            <h5>${p.name}</h5>
+                            <div class="product-price">$${p.price.toFixed(2)}${p.oldPrice ? `<span>$${p.oldPrice.toFixed(2)}</span>` : ''}</div>
+                            <button class="btn btn-add-cart" onclick="addToCart(${p.id}, this)">
+                                <i class="fas fa-cart-plus me-1"></i>Agregar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function filterCategory(cat, el) {
+            currentFilter = cat;
+            document.querySelectorAll('.category-pill').forEach(b => b.classList.remove('active'));
+            el.classList.add('active');
+            renderProducts();
+        }
+
+        // ============================
+        // CARRITO (funcional, en memoria)
+        // ============================
+        function addToCart(id, btnEl) {
+            const product = PRODUCTS.find(p => p.id === id);
+            const existing = cart.find(i => i.id === id);
+            if (existing) {
+                existing.qty += 1;
+            } else {
+                cart.push({ ...product, qty: 1 });
+            }
+            renderCart();
+            showToast(product.name + ' agregado al carrito');
+
+            if (btnEl) {
+                const original = btnEl.innerHTML;
+                btnEl.classList.add('added');
+                btnEl.innerHTML = '<i class="fas fa-check me-1"></i>Agregado';
+                setTimeout(() => { btnEl.classList.remove('added'); btnEl.innerHTML = original; }, 1200);
+            }
+        }
+
+        function changeQty(id, delta) {
+            const item = cart.find(i => i.id === id);
+            if (!item) return;
+            item.qty += delta;
+            if (item.qty <= 0) cart = cart.filter(i => i.id !== id);
+            renderCart();
+        }
+
+        function removeFromCart(id) {
+            cart = cart.filter(i => i.id !== id);
+            renderCart();
+        }
+
+        function renderCart() {
+            const container = document.getElementById('cartItemsContainer');
+            const totalCount = cart.reduce((s, i) => s + i.qty, 0);
+            const totalPrice = cart.reduce((s, i) => s + i.qty * i.price, 0);
+
+            document.getElementById('cartCount').textContent = totalCount;
+            document.getElementById('cartTotal').textContent = '$' + totalPrice.toFixed(2);
+
+            if (cart.length === 0) {
+                container.innerHTML = `
+                    <div class="cart-empty">
+                        <i class="fas fa-shopping-basket"></i>
+                        <p>Tu carrito está vacío</p>
+                    </div>`;
+                return;
+            }
+
+            container.innerHTML = cart.map(i => `
+                <div class="cart-item">
+                    <div class="cart-item-icon"><i class="fas ${i.icon}"></i></div>
+                    <div class="cart-item-info">
+                        <h6>${i.name}</h6>
+                        <small>$${i.price.toFixed(2)}</small>
+                        <div class="cart-item-qty">
+                            <button class="qty-btn" onclick="changeQty(${i.id}, -1)">−</button>
+                            <span>${i.qty}</span>
+                            <button class="qty-btn" onclick="changeQty(${i.id}, 1)">+</button>
+                        </div>
+                    </div>
+                    <button class="cart-item-remove" onclick="removeFromCart(${i.id})"><i class="fas fa-trash"></i></button>
+                </div>
+            `).join('');
+        }
+
+        function openCart() {
+            document.getElementById('cartDrawer').classList.add('open');
+            document.getElementById('cartOverlay').classList.add('open');
+        }
+        function closeCart() {
+            document.getElementById('cartDrawer').classList.remove('open');
+            document.getElementById('cartOverlay').classList.remove('open');
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toastMini');
+            toast.textContent = msg;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2000);
+        }
+
+        function demoAlert() {
+            alert('¡Esto es una demostración! El checkout real se conecta a tu pasarela de pagos preferida. Contacta a CyberDevTechArt para tener tu propia tienda.');
+        }
+
+        // Scroll reveal
+        function reveal() {
+            document.querySelectorAll('.reveal').forEach(el => {
+                if (el.getBoundingClientRect().top < window.innerHeight - 80) el.classList.add('active');
+            });
+        }
+        window.addEventListener('scroll', reveal);
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                const href = this.getAttribute('href');
+                if (href === '#' || href.length < 2) return;
+                e.preventDefault();
+                const target = document.querySelector(href);
+                if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+        });
+
+        renderProducts();
+        renderCart();
+        reveal();
+    </script>
+</body>
+</html>
