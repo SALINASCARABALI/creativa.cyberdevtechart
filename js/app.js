@@ -73,7 +73,7 @@ const PLANTILLAS = [
         nombre: 'VentaExpress POS',
         categoria: 'Punto de Venta',
         descripcion: 'Mini sistema de punto de venta para tiendas y negocios: catálogo por categorías, ticket, métodos de pago y ventas del día.',
-        precio: '$550.000 COP',
+        precio: '$850.000 COP',
         archivo: 'punto-venta.html',
         icono: 'fa-cash-register',
         color: 'venta',
